@@ -1,3 +1,4 @@
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:fooderlich_app2/utils/colors.dart';
 import 'package:fooderlich_app2/widgets/smalltext.dart';
@@ -38,14 +39,78 @@ class _FoodPageBodyState extends State<FoodPageBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: Dimensions.pageView,
-        child: PageView.builder(
-            controller: pageController,
-            itemCount: 5,
-            itemBuilder: (context, position) {
-              return _buildPageItem(position);
-            }));
+    return Column(
+      children: [
+        //slider section
+        Container(
+            height: Dimensions.pageView,
+            child: PageView.builder(
+                controller: pageController,
+                itemCount: 5,
+                itemBuilder: (context, position) {
+                  return _buildPageItem(position);
+                })),
+        //dots
+        new DotsIndicator(
+          dotsCount: 5,
+          position: _currPageValue,
+          decorator: DotsDecorator(
+            size: const Size.square(9.0),
+            activeSize: const Size(18.0, 9.0),
+            activeShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0)),
+          ),
+        ),
+        //Popular text
+        SizedBox(height: Dimensions.height30),
+        Container(
+            margin: EdgeInsets.only(left: Dimensions.width20),
+            child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+              BigText(text: 'Popular'),
+              SizedBox(width: Dimensions.width10),
+              Container(
+                margin: const EdgeInsets.only(bottom: 3),
+                child: BigText(text: '.', color: Colors.black26),
+              ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 2),
+                child: SmallText(text: 'Food pairing'),
+              ),
+              SizedBox(width: Dimensions.width10),
+            ])),
+
+        //list of food with images
+        Container(
+          height: 700,
+          child: ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            //shrinkWrap: true,
+            itemCount: 10,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: EdgeInsets.only(left: Dimensions.width20, right: Dimensions.width20, bottom: Dimensions.height10),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(Dimensions.radius20),
+                      color: Colors.white38,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage(
+                          'assets/image/'
+                        )
+                      )
+                      ),
+                    ),
+                  ]
+                ),
+              );
+            })
+        )
+      ],
+    );
   }
 
   Widget _buildPageItem(int index) {
@@ -79,10 +144,11 @@ class _FoodPageBodyState extends State<FoodPageBody> {
         children: [
           Container(
               height: Dimensions.pageViewContainer,
-              margin: EdgeInsets.only(left: Dimensions.width10, right: Dimensions.width10),
+              margin: EdgeInsets.only(
+                  left: Dimensions.width10, right: Dimensions.width10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radius30),
-                  color: index.isEven 
+                  color: index.isEven
                       ? Color(0xFF69c5df)
                       : Color.fromARGB(255, 210, 63, 63),
                   image: DecorationImage(
@@ -91,28 +157,24 @@ class _FoodPageBodyState extends State<FoodPageBody> {
             alignment: Alignment.bottomCenter,
             child: Container(
               height: Dimensions.pageViewTextContainer,
-              margin: EdgeInsets.only(left: Dimensions.width30, right: Dimensions.width30, bottom: Dimensions.height30),
+              margin: EdgeInsets.only(
+                  left: Dimensions.width30,
+                  right: Dimensions.width30,
+                  bottom: Dimensions.height30),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular (Dimensions.radius20),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0xFFe8e8e8),
-                    blurRadius: 5.0, 
-                    offset: Offset(0, 5)
-                  ),
-                  BoxShadow(
-                    color: Colors.white,
-                    offset: Offset(-5, 0)
-                  ),
-                  BoxShadow(
-                    color: Colors.white,
-                    offset: Offset(5, 0)
-                  )
-                ]
-              ),
+                  borderRadius: BorderRadius.circular(Dimensions.radius20),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Color(0xFFe8e8e8),
+                        blurRadius: 5.0,
+                        offset: Offset(0, 5)),
+                    BoxShadow(color: Colors.white, offset: Offset(-5, 0)),
+                    BoxShadow(color: Colors.white, offset: Offset(5, 0))
+                  ]),
               child: Container(
-                padding: EdgeInsets.only(top: Dimensions.height15, left: 15, right: 15),
+                padding: EdgeInsets.only(
+                    top: Dimensions.height15, left: 15, right: 15),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
